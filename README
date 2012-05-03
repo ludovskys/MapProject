@@ -1,0 +1,4 @@
+The source codes are located in src/pckg/MapProject2/
+The xml files are located in res/
+	There are one xml layout file for each type of android screens
+	And there are two xml files for the string values (english and french)
