@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TextView
+        android:id="@+id/labeltitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/addplace"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/labelname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labeltitle"
+        android:text="@string/entername" />
+
+    <EditText
+        android:id="@+id/entryname"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labelname"
+        android:layout_marginBottom="10dp"
+        android:background="@android:drawable/editbox_background"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/labeladress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/entryname"
+        android:text="@string/enteraddr" />
+
+    <EditText
+        android:id="@+id/entryadress"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labeladress"
+        android:background="@android:drawable/editbox_background"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/labelerror"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/entryadress"
+        android:textColor="#ff0000" />
+
+    <ListView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/listviewchoices"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_alignBottom="@+id/confirmplace"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/labelname"
+        android:layout_marginRight="65dp"
+        android:gravity="center" >
+
+    </ListView>
+
+    <Button
+        android:id="@+id/confirmplace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/labelerror"
+        android:gravity="center"
+        android:text="@string/add" />
+
+</RelativeLayout>

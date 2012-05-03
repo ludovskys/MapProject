@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, MyMapActivity!</string>
+    <string name="app_name">MapProject1</string>
+    
+    <string name="text_layout">Coucou je suis en mode layout</string>
+    <string name="text_layout_land">Coucou je suis en mode layout-land</string>
+    <string name="text_layout_large">Coucou je suis en mode layout-large</string>
+    <string name="text_layout_large_land">Coucou je suis en mode layout-large-land</string>
+    
+    <string name="text_pres">Choississez un endroit pour le faire apparaître sur la carte</string>
+    
+    <string name="google_map_key">0DXRNLYK3YcF26UHcOYbSDjItt3rJqBOBNTI5WQ</string>
+
+    <string-array name="places_array">
+        <item>Maison</item>
+        <item>Resto préfèré</item>
+        <item>Wind River</item>
+    </string-array>
+    
+    <string name="options">Options</string>
+    
+    <string name="quit">Quitter</string>
+    
+    <string name="mapmode">Changer le mode d\'affichage de la carte</string>
+    
+    <string name="satellite">Affichage satellite</string>
+    <string name="traffic">Affichage traffic</string>
+    
+    <string name="addplace">Ajouter un endroit</string>
+    
+    <string name="enteraddr">Entrer une adresse :</string>
+    <string name="entername">Entrer un nom :</string>
+    
+    <string name="add">Ajouter</string>
+    
+    <string name="placename">Entrer un nom : </string>
+    
+    <string name="fieldserror">Un ou plusieurs champs ne sont pas renseignées</string>
+    
+    <string name="coornotfound">Les coordonnées de l\'adresse donnée n\'ont pas été trouvé</string>
+    
+    <string name="severalloc">Plisieurs endroits correspondent à votre recherche</string>
+    
+    <string name="addpointquestion">Ajouter ce point ?</string>
+    
+    <string name="yes">Oui</string>
+    
+    <string name="cancel">Annuler</string>
+    
+    
+
+
+</resources>

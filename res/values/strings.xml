@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, MyMapActivity!</string>
+    <string name="app_name">MapProject1</string>
+    
+    <string name="text_layout">Coucou je suis en mode layout</string>
+    <string name="text_layout_land">Coucou je suis en mode layout-land</string>
+    <string name="text_layout_large">Coucou je suis en mode layout-large</string>
+    <string name="text_layout_large_land">Coucou je suis en mode layout-large-land</string>
+    
+    <string name="text_pres">Choose a place to be displayed on the map</string>
+    
+    <string name="google_map_key">0DXRNLYK3YcF26UHcOYbSDjItt3rJqBOBNTI5WQ</string>
+
+    <string-array name="places_array">
+        <item>Romanian Home</item>
+        <item>Favorite restaurant</item>
+        <item>Wind River</item>
+    </string-array>
+    
+    <string name="options">Options</string>
+    
+    <string name="quit">Quit</string>
+    
+    <string name="mapmode">Change the map\'s mode</string>
+    
+    <string name="satellite">Satellite mod</string>
+    <string name="traffic">Traffic mod</string>
+    
+    <string name="addplace">Add a place</string>
+    
+    <string name="enteraddr">Enter an address: </string>
+    <string name="entername">Enter a name: </string>
+    
+    <string name="add">Add</string>
+    
+    <string name="placename">Enter a name: </string>
+    
+    <string name="fieldserror">One or more fields are not filled</string>
+    
+    <string name="coornotfound">Coordinates of the given adress not found</string>
+    
+    <string name="severalloc">Several locations match your search</string>
+    
+    
+    <string name="addpointquestion">Add this point?</string>
+    
+    <string name="yes">Yes</string>
+    
+    <string name="cancel">Cancel</string>
+    
+
+
+</resources>
