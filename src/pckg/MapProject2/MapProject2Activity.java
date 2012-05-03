@@ -88,7 +88,7 @@ public class MapProject2Activity extends MapActivity implements LocationListener
         {
         	editor.putInt("counterPlaces", 1);
             editor.commit(); 
-        } 
+        }  
         
         initUI();
   
