@@ -6,30 +6,39 @@ import java.util.List;
 //importation of the google map API
 import com.google.android.maps.*;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
 
 import android.graphics.drawable.Drawable;
 
 import android.location.Location;
 import android.location.LocationListener;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.Contacts.People;
 
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem; 
+import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 public class MapProject2Activity extends MapActivity implements LocationListener {
@@ -41,7 +50,11 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 	private OverlayItem myOverlayItem;
 	private MapController mapController;
 	
+	private Context mContext;
+	
 	public static ArrayAdapter<String> listAdapter;
+	
+	private Button bModifyPlace;
 	
 	/*
 	private String bestProvider;
@@ -62,12 +75,14 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 	public static ArrayList<Double> placesCoorLong = new ArrayList<Double>();
 	public static ArrayList<Double> placesCoorLat = new ArrayList<Double>();
 	
+	// menu
 	public static final int MENU_OPTIONS = 0;
 	public static final int MENU_QUITTER = 1;
 	public static final int SOUS_MENU_OPTIONS_MAP_MODE = 2;
 	public static final int SOUS_MENU_MAP_MODE_SATELLITE = 3;
 	public static final int SOUS_MENU_MAP_MODE_TRAFFIC = 4;
 	
+	// contextual menu
 	public static final int CONTEXTUAL_MENU_ADD_POINT = 1;
 	
 	public static final String PREFS_PLACES = "MyPlacesFile";
@@ -107,6 +122,7 @@ public class MapProject2Activity extends MapActivity implements LocationListener
     // procedure which init the view
     public void initUI()
     {
+    	mContext = getApplicationContext();
         
         mapView = (MyCustomMapView) findViewById(R.id.mapview);
         
@@ -210,6 +226,8 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 					
 					int itemPosition = pos;
 					
+					displayModifyPlaceButton(pos);
+					
 					// creation of the chosen point
 					GeoPoint p = new GeoPoint((int) (placesCoorLat.get(itemPosition) * 1E6), 
 							(int) (placesCoorLong.get(itemPosition) * 1E6));
@@ -228,6 +246,7 @@ public class MapProject2Activity extends MapActivity implements LocationListener
       	  		public void onLongpress(final MapView view, final GeoPoint longpressLocation) {
       	  			runOnUiThread(new Runnable() {
       	  				public void run() {	   	  
+      	  					bModifyPlace.setVisibility(View.GONE);
       	  					// creation and opening of the contextual menu
       	  					registerForContextMenu(view);
       	  					openContextMenu(view);
@@ -237,6 +256,18 @@ public class MapProject2Activity extends MapActivity implements LocationListener
       	  			});
       	  		}
       	  	});
+      	  	/*
+      	  	mapView.setOnTouchListener(new OnTouchListener() {
+
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					
+					Toast.makeText(mContext, "coucou touch map", Toast.LENGTH_SHORT).show();
+					
+					return false;
+				}
+      	  		
+      	  	});*/
       	  	
         } // end if (mapView != null )
       	  	
@@ -249,6 +280,7 @@ public class MapProject2Activity extends MapActivity implements LocationListener
         	bAddPlace.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {		
+					bModifyPlace.setVisibility(View.GONE);
 					// go to the view to add a place
 					Intent i = new Intent (MapProject2Activity.this, AddPlaceActivity.class);
 					startActivity(i);	
@@ -256,7 +288,43 @@ public class MapProject2Activity extends MapActivity implements LocationListener
         	});
         } // end if ( bAddPlace != null )
         
+        bModifyPlace = (Button) findViewById(R.id.button_modify_place);
+        
+        if (bModifyPlace != null)
+        {
+        	bModifyPlace.setVisibility(View.GONE);
+        	
+        	bModifyPlace.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					
+					Intent i = new Intent (MapProject2Activity.this, ModifyPlaceActivity.class);
+					startActivity(i);
+					
+					
+					
+				}
+        		
+        	});
+        }
+        
+        
+        
     } // end public void initUI()
+    
+    public void displayModifyPlaceButton(int placeID)
+    {
+    	//Log.d("MapProject2Activity", "lol");
+    	
+    	bModifyPlace.setVisibility(View.VISIBLE);
+    	
+    	String place = placesName.get(placeID);
+    	
+    	Toast.makeText(mContext, place, Toast.LENGTH_SHORT).show();
+    	
+    	
+    }
 
     // creation of the menu
     @Override
@@ -322,7 +390,7 @@ public class MapProject2Activity extends MapActivity implements LocationListener
     {  
         if(item.getItemId() == CONTEXTUAL_MENU_ADD_POINT)
         {
-        	Toast.makeText(getApplicationContext(), "The point was added on the list", Toast.LENGTH_LONG).show();
+        	Toast.makeText(mContext, "The point was added on the list", Toast.LENGTH_LONG).show();
         	addPoint();
         }  
         else {return false;}  

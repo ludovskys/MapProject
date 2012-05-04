@@ -50,6 +50,10 @@
     
     <string name="cancel">Cancel</string>
     
+    
+    <string name="modifyplace">Modify current place</string>
+    
+    
 
 
 </resources>

@@ -20,6 +20,7 @@ public final class R {
     }
     public static final class id {
         public static final int button_add_place=0x7f06000a;
+        public static final int button_modify_place=0x7f06000b;
         public static final int confirmplace=0x7f060007;
         public static final int entryadress=0x7f060004;
         public static final int entryname=0x7f060002;
@@ -29,13 +30,14 @@ public final class R {
         public static final int labeltitle=0x7f060000;
         public static final int listViewPlaces=0x7f060009;
         public static final int listviewchoices=0x7f060006;
-        public static final int mapview=0x7f06000c;
+        public static final int mapview=0x7f06000d;
         public static final int textviewinfos=0x7f060008;
-        public static final int zoom=0x7f06000b;
+        public static final int zoom=0x7f06000c;
     }
     public static final class layout {
         public static final int addplace=0x7f030000;
         public static final int main=0x7f030001;
+        public static final int modifyplace=0x7f030002;
     }
     public static final class string {
         public static final int add=0x7f040010;
@@ -50,6 +52,7 @@ public final class R {
         public static final int google_map_key=0x7f040007;
         public static final int hello=0x7f040000;
         public static final int mapmode=0x7f04000a;
+        public static final int modifyplace=0x7f040018;
         public static final int options=0x7f040008;
         public static final int placename=0x7f040011;
         public static final int quit=0x7f040009;
