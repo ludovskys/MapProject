@@ -51,6 +51,18 @@
     
     <string name="modifyplace">Modifier la sélection</string>
     
+    <string name="modify">Modifier</string>
+
+    <string name="suppr_place">Supprimer</string>
+    
+    <string name="supprpointquestion">Supprimer ce point ?</string>
+    
+    <string name="sethomeaddress">Fixé en tant qu\'adresse principal à...</string>
+    
+    <string name="entrycontacthome">Adresse principale de : </string>
+    
+    <string name="contacthome">personne</string>
+    
     
 
 

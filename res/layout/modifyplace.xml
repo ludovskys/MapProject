@@ -4,9 +4,80 @@
     android:layout_height="fill_parent">
     
     <TextView
-        android:layout_width="fill_parent"
+        android:id="@+id/labelmodifyplace"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#ff0000" 
-        android:text="coucou"/>
+        android:text="@string/entername" />
+    
+    <EditText
+        android:id="@+id/entrymodifyplace"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:textColor="#000000"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/labelmodifyplace"/>
+    
+    <TextView
+        android:id="@+id/labelmodifyaddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enteraddr"
+        android:layout_below="@+id/entrymodifyplace" />
+    
+    <EditText
+        android:id="@+id/entrymodifyaddress"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:textColor="#000000"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/labelmodifyaddress"/>
+    
+    
+    <TextView
+        android:id="@+id/labelcontacthome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/entrycontacthome"
+        
+        android:layout_below="@+id/entrymodifyaddress" />
+    
+    <TextView
+        android:id="@+id/labelmodifycontacthome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/contacthome"
+        android:layout_toRightOf="@+id/labelcontacthome"
+        android:layout_below="@+id/entrymodifyaddress" />
+    
+    
+    
+    <Button
+        android:id="@+id/button_set_home_addr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labelmodifycontacthome"
+        android:gravity="center"
+        android:text="@string/sethomeaddress"
+        android:layout_marginBottom="10dp" />
+    
+    <Button
+        android:id="@+id/button_confirm_modif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_set_home_addr"
+        android:gravity="center"
+        android:text="@string/modify" />
+    
+    
+    <Button
+        android:id="@+id/button_suppr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/suppr_place"
+        android:layout_below="@id/button_set_home_addr"
+        android:layout_toRightOf="@+id/button_confirm_modif" />
     
 </RelativeLayout>

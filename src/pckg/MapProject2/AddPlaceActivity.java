@@ -26,15 +26,13 @@ public class AddPlaceActivity extends Activity
 	private ListView listViewChoices;
 	private ArrayList<String> listChoices;
 	private List<Address> listAd;
-	
+	 
 	private Context mContext;
 	
 	private String placeName, placeAddress;
 	
 	private Button bAdd;
 	private TextView tvError;
-	
-	private static final String PREFS_PLACES = "MyPlacesFile";
 	
 	private SharedPreferences settings;
 	private SharedPreferences.Editor editor;
@@ -45,7 +43,7 @@ public class AddPlaceActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.addplace);
         
-        mContext = getApplicationContext();
+        mContext = getApplicationContext(); 
         
         listViewChoices = (ListView)findViewById(R.id.listviewchoices); 
         
@@ -53,7 +51,7 @@ public class AddPlaceActivity extends Activity
         
         tvError = (TextView) findViewById(R.id.labelerror);
         
-        settings = getSharedPreferences(PREFS_PLACES, 0);
+        settings = getSharedPreferences(MapProject2Activity.PREFS_PLACES, 0);
         editor = settings.edit();
         
         compteurPlaces = settings.getInt("counterPlaces", 0);
@@ -127,6 +125,10 @@ public class AddPlaceActivity extends Activity
 								
 								MapProject2Activity.placesCoorLat.add(listAd.get(0).getLatitude());
 								
+								MapProject2Activity.placesNumber.add(compteurPlaces);
+								
+								MapProject2Activity.placesContactHome.add(null);
+								
 								// update of the list of places
 								MapProject2Activity.listAdapter.notifyDataSetChanged();
 								
@@ -138,7 +140,13 @@ public class AddPlaceActivity extends Activity
 								
 								editor.putString("lat"+Integer.toString(compteurPlaces), 
 										Double.toString(listAd.get(0).getLatitude()));
+								   
+								editor.putInt("number"+Integer.toString(compteurPlaces), 
+										compteurPlaces); 
 								
+								editor.putString("contact"+Integer.toString(compteurPlaces), 
+										"");
+								   
 								compteurPlaces++;
 								
 								editor.putInt("counterPlaces", compteurPlaces);
@@ -146,7 +154,7 @@ public class AddPlaceActivity extends Activity
 								
 					            // we return to the previous view
 								finish();
-							}
+							} 
 							
 						}
 						
@@ -178,6 +186,10 @@ public class AddPlaceActivity extends Activity
 				
 				MapProject2Activity.placesCoorLat.add(listAd.get(pos).getLatitude());
 				
+				MapProject2Activity.placesNumber.add(compteurPlaces);
+				
+				MapProject2Activity.placesContactHome.add(null);
+				
 				editor.putString("name"+Integer.toString(compteurPlaces), placeName);
 				editor.putString("address"+Integer.toString(compteurPlaces), 
 						placeAddress);
@@ -187,6 +199,12 @@ public class AddPlaceActivity extends Activity
 				
 				editor.putString("lat"+Integer.toString(compteurPlaces), 
 						Double.toString(listAd.get(pos).getLatitude()));
+				
+				editor.putInt("number"+Integer.toString(compteurPlaces), 
+						compteurPlaces);
+				
+				editor.putString("contact"+Integer.toString(compteurPlaces), 
+						"");
 				
 				compteurPlaces++;
 				

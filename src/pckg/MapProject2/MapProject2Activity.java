@@ -74,6 +74,8 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 	public static ArrayList<String> placesStreet = new ArrayList<String>();
 	public static ArrayList<Double> placesCoorLong = new ArrayList<Double>();
 	public static ArrayList<Double> placesCoorLat = new ArrayList<Double>();
+	public static ArrayList<Integer> placesNumber = new ArrayList<Integer>();
+	public static ArrayList<String> placesContactHome = new ArrayList<String>();
 	
 	// menu
 	public static final int MENU_OPTIONS = 0;
@@ -85,10 +87,13 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 	// contextual menu
 	public static final int CONTEXTUAL_MENU_ADD_POINT = 1;
 	
-	public static final String PREFS_PLACES = "MyPlacesFile";
+	public static final String PREFS_PLACES = "MyPlacesFile9";
 	public SharedPreferences settings;
 	public SharedPreferences.Editor editor;
 	public int compteurPlaces;
+	
+	// contain the position in the list of the place to modify
+	public static int posPlaceModify;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,6 +102,8 @@ public class MapProject2Activity extends MapActivity implements LocationListener
         
         settings = getSharedPreferences(PREFS_PLACES, 0);
         editor = settings.edit();
+        
+        
         
         // if compteurPlaces is not set (very first start of the application)
         if ( (compteurPlaces = settings.getInt("counterPlaces", 0)) == 0 )
@@ -146,8 +153,8 @@ public class MapProject2Activity extends MapActivity implements LocationListener
             mapOverlays.add(itemizedoverlay);
             
             mapController.setCenter(examplePoint);
-            mapController.setZoom(4);
-            
+            mapController.setZoom(4); 
+             
             /*
             lm = (LocationManager) getSystemService(LOCATION_SERVICE);
             
@@ -173,38 +180,26 @@ public class MapProject2Activity extends MapActivity implements LocationListener
             
             itemizedoverlay.addOverlay(myOverlayItem);
             mapOverlays.add(itemizedoverlay);*/
-            
+              
             // if the lists are empty (happens when the orientation change)
-            if (placesName.isEmpty())
+            if (placesName.isEmpty()) 
             {
-            	placesName.add("Maison");
-                placesName.add("Resto préféré");
-                placesName.add("Wind River");
-                
-                
-                placesStreet.add("Strada Garii");
-            	placesStreet.add("Strada Domneasca");
-            	placesStreet.add("Strada Domneasca");
-            	
-            	
-            	placesCoorLat.add(45.442957);
-            	placesCoorLat.add(45.444058);
-            	placesCoorLat.add(45.438296);
-            	
-            	
-            	placesCoorLong.add(28.050767);
-            	placesCoorLong.add(28.055171);
-            	placesCoorLong.add(28.056276); 
-            	
             	// recovering of the places previously added by the user in other sessions
-            	for (int i=1; i < compteurPlaces; i++)
+            	for (int i=1; i < 10; i++)
             	{
             		if ( !settings.getString("name"+Integer.toString(i),"").equals("") )
             		{
+            			Log.d("project",Integer.toString(i));
+            			
+            			
             			placesName.add(settings.getString("name"+Integer.toString(i),""));
             			placesStreet.add(settings.getString("address"+Integer.toString(i),""));
             			placesCoorLat.add(Double.parseDouble(settings.getString("lat"+Integer.toString(i),"")));
             			placesCoorLong.add(Double.parseDouble(settings.getString("long"+Integer.toString(i),"")));
+            			placesNumber.add(i);
+            			placesContactHome.add(settings.getString("contact"+Integer.toString(i),""));
+            			
+            			Log.d("tag mappro2", settings.getString("contact"+Integer.toString(i),"null"));
             		}
             	}
             	
@@ -232,12 +227,23 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 					GeoPoint p = new GeoPoint((int) (placesCoorLat.get(itemPosition) * 1E6), 
 							(int) (placesCoorLong.get(itemPosition) * 1E6));
 					
-					OverlayItem overlay = new OverlayItem(p, item, placesStreet.get(itemPosition));
+					String subTitle = placesStreet.get(itemPosition);
+					if (placesContactHome.get(itemPosition)!=null)
+					{
+						subTitle = subTitle + "\nHome of " + placesContactHome.get(itemPosition);
+					}
+					
+					OverlayItem overlay = new OverlayItem(p, item, 
+							placesStreet.get(itemPosition) + "\nHome of " + placesContactHome.get(itemPosition));
 					
 					itemizedoverlay.addOverlay(overlay);
 		            mapOverlays.add(itemizedoverlay);
 		            
 		            mapController.setCenter(p);
+		            
+		            Log.d("pos",Integer.toString(itemPosition));
+		            
+		            posPlaceModify = itemPosition;
 				}   	
             }); // end new OnItemClickListener()
       	  	  	
@@ -299,14 +305,17 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 				@Override
 				public void onClick(View v) {
 					
+					
+					
+					
 					Intent i = new Intent (MapProject2Activity.this, ModifyPlaceActivity.class);
+					//startActivity(i);
+					
 					startActivity(i);
-					
-					
 					
 				}
         		
-        	});
+        	}); 
         }
         
         
@@ -320,8 +329,6 @@ public class MapProject2Activity extends MapActivity implements LocationListener
     	bModifyPlace.setVisibility(View.VISIBLE);
     	
     	String place = placesName.get(placeID);
-    	
-    	Toast.makeText(mContext, place, Toast.LENGTH_SHORT).show();
     	
     	
     }
@@ -407,6 +414,10 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 		placesCoorLong.add((double) myPoint.getLongitudeE6() / 1E6);
 
 		placesCoorLat.add((double) myPoint.getLatitudeE6() / 1E6);
+		
+		placesNumber.add(compteurPlaces);  
+		
+		placesContactHome.add(null);
 
 		listAdapter.notifyDataSetChanged();
 		
@@ -418,6 +429,9 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 		
 		editor.putString("lat"+Integer.toString(compteurPlaces), 
 				Integer.toString(myPoint.getLatitudeE6()));
+		
+		editor.putString("contact"+Integer.toString(compteurPlaces), 
+				"");
 		
         OverlayItem overlay = new OverlayItem(myPoint, "MyTestPoint"+compteurPlaces, 
         		"");

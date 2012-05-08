@@ -53,7 +53,17 @@
     
     <string name="modifyplace">Modify current place</string>
     
+    <string name="modify">Modify</string>
     
+    <string name="suppr_place">Delete</string>
+    
+    <string name="supprpointquestion">Delete this point?</string>
+    
+    <string name="sethomeaddress">Set as home address of...</string>
+    
+    <string name="entrycontacthome">Main address of: </string>
+    
+    <string name="contacthome">nobody</string>
 
 
 </resources>
