@@ -38,7 +38,7 @@ public class AddPlaceActivity extends Activity
 	private SharedPreferences.Editor editor;
 	private int compteurPlaces;
 	
-	public static final String PREFS_PLACES = "MyPlacesFile15";
+	public static final String PREFS_PLACES = "MyPlacesFile16";
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,7 +128,7 @@ public class AddPlaceActivity extends Activity
 								
 								MapProject2Activity.placesNumber.add(compteurPlaces);
 								
-								MapProject2Activity.placesContactHome.add(null);
+								MapProject2Activity.placesContactHome.add("");
 								
 								// update of the list of places
 								MapProject2Activity.listAdapter.notifyDataSetChanged();

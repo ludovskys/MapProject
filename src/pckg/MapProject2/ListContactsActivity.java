@@ -9,16 +9,16 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 @SuppressWarnings("deprecation")
-public class ListContactsActivity extends ListActivity {
-
+public class ListContactsActivity extends ListActivity 
+{
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) 
+    {
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.contactlist);
 
- 
-
-    	Cursor cursor = getContentResolver().query(People.CONTENT_URI, new String[] {People._ID, People.NAME, People.NUMBER}, null, null, null);
+    	Cursor cursor = getContentResolver().query(People.CONTENT_URI, 
+    			new String[] {People._ID, People.NAME, People.NUMBER}, null, null, null);
     	startManagingCursor(cursor);
 
     	// the desired columns to be bound
@@ -34,7 +34,8 @@ public class ListContactsActivity extends ListActivity {
     }
      
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    protected void onListItemClick(ListView l, View v, int position, long id) 
+    {
     	super.onListItemClick(l, v, position, id);
     	
     	Cursor c = (Cursor) this.getListAdapter().getItem(position);
@@ -43,8 +44,7 @@ public class ListContactsActivity extends ListActivity {
 
     	finish();
     }
-    
-    
+     
 }
 
 

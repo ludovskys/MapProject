@@ -40,7 +40,7 @@
     
     <string name="placename">Enter a name: </string>
     
-    <string name="fieldserror">One or more fields are not filled</string>
+    <string name="fieldserror">One or more fields are empty</string>
     
     <string name="coornotfound">Coordinates of the given adress not found</string>
     

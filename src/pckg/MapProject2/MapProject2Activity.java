@@ -77,9 +77,9 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 	private static final int SOUS_MENU_OPTIONS_DISTANCE_POINT = 6;
 	
 	// contextual menu
-	private static final int CONTEXTUAL_MENU_ADD_POINT = 1;
+	private static final int CONTEXTUAL_MENU_ADD_POINT = 1; 
 	
-	public static final String PREFS_PLACES = "MyPlacesFile15";
+	public static final String PREFS_PLACES = "MyPlacesFile16"; 
 	private SharedPreferences settings;
 	private SharedPreferences.Editor editor;
 	private int compteurPlaces;
@@ -91,7 +91,7 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 	private static final String DISTANCEMOD="Distance";
 	private static String mod = ADDMOD;
 	
-	private String place1 ="", place2 = "";
+	private String place1 ="", place2 = ""; 
 	
 	private Location loc1, loc2;
 	
@@ -261,6 +261,7 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 							(int) (placesCoorLong.get(itemPosition) * 1E6)); 
 					
 					String subTitle = placesStreet.get(itemPosition);
+					
 					if (!placesContactHome.get(itemPosition).equals(""))
 					{
 						subTitle = subTitle + "\nHome of " + placesContactHome.get(itemPosition);
@@ -472,7 +473,7 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 		 
 		placesNumber.add(compteurPlaces);  
 		
-		placesContactHome.add(null);
+		placesContactHome.add("");
  
 		listAdapter.notifyDataSetChanged();
 		

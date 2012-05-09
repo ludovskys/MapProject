@@ -30,7 +30,7 @@ public class ModifyPlaceActivity extends Activity {
 	
 	private static final int CONTEXTUAL_MENU_DELETE_POINT = 1;
 	
-	private static final String PREFS_PLACES = "MyPlacesFile15"; 
+	private static final String PREFS_PLACES = "MyPlacesFile16"; 
 	
 	@Override 
     public void onCreate(Bundle savedInstanceState) {
