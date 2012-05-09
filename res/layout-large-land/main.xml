@@ -1,60 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-                      
-                      
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="horizontal" >
 
     <TextView
         android:id="@+id/textviewinfos"
-        android:layout_width="fill_parent"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:text="@string/text_pres" />
+        android:text="@string/text_pres1"
+        android:textSize="20dp" />
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
+    <TextView
+        android:id="@+id/textviewpoint1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textviewinfos"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:text="@string/text_point1" />
 
+    <TextView
+        android:id="@+id/textviewnamepoint1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textviewinfos"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:layout_toRightOf="@id/textviewpoint1" />
 
-        <ListView
-            android:id="@+id/listViewPlaces"
-            android:layout_width="300dp"
-            android:layout_height="200dp"
-            android:padding="10dp"
-            android:textSize="16sp" ></ListView>
-            
-    		
-    	<Button
-            android:id="@+id/button_add_place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/listViewPlaces"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:text="@string/addplace" />
+    <TextView
+        android:id="@+id/textviewpoint2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textviewpoint1"
+        android:textSize="20dp"
+        android:text="@string/text_point2" />
 
-    	<pckg.MapProject2.MyCustomMapView
-    		xmlns:android="http://schemas.android.com/apk/res/android"
-    		android:id="@+id/mapview"
-    		android:layout_width="400dp"
-    		android:layout_height="400dp"
-    		android:layout_marginTop="80dp"
-    		android:layout_marginLeft="300dp"
-    		android:layout_gravity="center"
-    		android:clickable="true"
-    		android:apiKey="@string/google_map_key" />
-    	
-    	<LinearLayout android:id="@+id/zoom"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:layout_centerHorizontal="true"/>
+    <TextView
+        android:id="@+id/textviewnamepoint2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textviewpoint1"
+        android:textSize="20dp"
+        android:layout_toRightOf="@id/textviewpoint2" />
 
-    	
-		
-	</RelativeLayout>
+    <TextView
+        android:id="@+id/textviewdistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textviewpoint2"
+        android:layout_marginBottom="20dp"
+        android:textSize="20dp"
+        android:text="@string/text_distance" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/textviewresultdistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textviewpoint2"
+        android:textSize="20dp"
+        android:layout_toRightOf="@id/textviewdistance" />
+
+    <ListView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/listViewPlaces"
+        android:layout_width="250dp"
+        android:layout_height="220dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/textviewpoint2"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp" >
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/zoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/button_add_place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listViewPlaces"
+        android:text="@string/addplace" />
+    
+    <Button
+        android:id="@+id/button_modify_place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listViewPlaces"
+        android:layout_toRightOf="@+id/button_add_place"
+        android:text="@string/modifyplace" />
+
+    <pckg.MapProject2.MyCustomMapView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mapview"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/textviewinfos"
+        android:apiKey="@string/google_map_key"
+        android:clickable="true" >
+    </pckg.MapProject2.MyCustomMapView>
+
+</RelativeLayout>

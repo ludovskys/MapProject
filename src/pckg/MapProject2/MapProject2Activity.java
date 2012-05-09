@@ -10,35 +10,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.database.Cursor;
 
 import android.graphics.drawable.Drawable;
 
 import android.location.Location;
 import android.location.LocationListener;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.provider.Contacts.People;
 
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem; 
-import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MapProject2Activity extends MapActivity implements LocationListener {
@@ -53,18 +46,15 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 	private Context mContext;
 	
 	public static ArrayAdapter<String> listAdapter;
-	
-	private Button bModifyPlace;
-	
-	/*
-	private String bestProvider;
-	private LocationManager lm;
-	private Projection projection;  
-	*/
-	
+
 	private List<Overlay> mapOverlays;
 	
+	private Button bAddPlace, bModifyPlace;
+	
 	private ListView listPlaces;
+	
+	public TextView tvInfo, tvFirstPoint, tvSecondPoint, tvDistance, tvNameFirstPoint, 
+					tvNameSecondPoint, tvResultDistance;
 	
 	private double lat = 0;
 	private double lng = 0;
@@ -78,22 +68,32 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 	public static ArrayList<String> placesContactHome = new ArrayList<String>();
 	
 	// menu
-	public static final int MENU_OPTIONS = 0;
-	public static final int MENU_QUITTER = 1;
-	public static final int SOUS_MENU_OPTIONS_MAP_MODE = 2;
-	public static final int SOUS_MENU_MAP_MODE_SATELLITE = 3;
-	public static final int SOUS_MENU_MAP_MODE_TRAFFIC = 4;
+	private static final int MENU_OPTIONS = 0;
+	private static final int MENU_QUITTER = 1;
+	private static final int SOUS_MENU_OPTIONS_MAP_MODE = 2;
+	private static final int SOUS_MENU_MAP_MODE_SATELLITE = 3;
+	private static final int SOUS_MENU_MAP_MODE_TRAFFIC = 4;
+	private static final int SOUS_MENU_OPTIONS_ADD_MODIFY_POINT = 5;
+	private static final int SOUS_MENU_OPTIONS_DISTANCE_POINT = 6;
 	
 	// contextual menu
-	public static final int CONTEXTUAL_MENU_ADD_POINT = 1;
+	private static final int CONTEXTUAL_MENU_ADD_POINT = 1;
 	
-	public static final String PREFS_PLACES = "MyPlacesFile9";
-	public SharedPreferences settings;
-	public SharedPreferences.Editor editor;
-	public int compteurPlaces;
+	public static final String PREFS_PLACES = "MyPlacesFile15";
+	private SharedPreferences settings;
+	private SharedPreferences.Editor editor;
+	private int compteurPlaces;
 	
 	// contain the position in the list of the place to modify
 	public static int posPlaceModify;
+
+	private static final String ADDMOD="Add";	
+	private static final String DISTANCEMOD="Distance";
+	private static String mod = ADDMOD;
+	
+	private String place1 ="", place2 = "";
+	
+	private Location loc1, loc2;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,9 +101,7 @@ public class MapProject2Activity extends MapActivity implements LocationListener
         setContentView(R.layout.main);
         
         settings = getSharedPreferences(PREFS_PLACES, 0);
-        editor = settings.edit();
-        
-        
+        editor = settings.edit(); 
         
         // if compteurPlaces is not set (very first start of the application)
         if ( (compteurPlaces = settings.getInt("counterPlaces", 0)) == 0 )
@@ -129,6 +127,19 @@ public class MapProject2Activity extends MapActivity implements LocationListener
     // procedure which init the view
     public void initUI()
     {
+    	tvInfo = (TextView) findViewById(R.id.textviewinfos);
+        tvFirstPoint = (TextView) findViewById(R.id.textviewpoint1);
+        tvSecondPoint = (TextView) findViewById(R.id.textviewpoint2);
+        tvDistance = (TextView) findViewById(R.id.textviewdistance);
+        
+        tvNameFirstPoint = (TextView) findViewById(R.id.textviewnamepoint1);
+        tvNameSecondPoint = (TextView) findViewById(R.id.textviewnamepoint2);
+        tvResultDistance = (TextView) findViewById(R.id.textviewresultdistance);
+        
+        tvFirstPoint.setVisibility(View.GONE);
+        tvSecondPoint.setVisibility(View.GONE);
+        tvDistance.setVisibility(View.GONE);
+        
     	mContext = getApplicationContext();
         
         mapView = (MyCustomMapView) findViewById(R.id.mapview);
@@ -162,8 +173,7 @@ public class MapProject2Activity extends MapActivity implements LocationListener
             
     		Criteria criteria = new Criteria();
     		bestProvider = lm.getBestProvider(criteria, false);
-    		
-    		Log.d("MapProject2Activity", bestProvider);
+
             
             Location myLoc = new Location(bestProvider);
             
@@ -181,33 +191,12 @@ public class MapProject2Activity extends MapActivity implements LocationListener
             itemizedoverlay.addOverlay(myOverlayItem);
             mapOverlays.add(itemizedoverlay);*/
               
-            // if the lists are empty (happens when the orientation change)
-            if (placesName.isEmpty()) 
-            {
-            	// recovering of the places previously added by the user in other sessions
-            	for (int i=1; i < 10; i++)
-            	{
-            		if ( !settings.getString("name"+Integer.toString(i),"").equals("") )
-            		{
-            			Log.d("project",Integer.toString(i));
-            			
-            			
-            			placesName.add(settings.getString("name"+Integer.toString(i),""));
-            			placesStreet.add(settings.getString("address"+Integer.toString(i),""));
-            			placesCoorLat.add(Double.parseDouble(settings.getString("lat"+Integer.toString(i),"")));
-            			placesCoorLong.add(Double.parseDouble(settings.getString("long"+Integer.toString(i),"")));
-            			placesNumber.add(i);
-            			placesContactHome.add(settings.getString("contact"+Integer.toString(i),""));
-            			
-            			Log.d("tag mappro2", settings.getString("contact"+Integer.toString(i),"null"));
-            		}
-            	}
-            	
-            } // end if (placesName.isEmpty())
+            // filling of the lists
+            fillLists();
 
             listPlaces = (ListView)findViewById(R.id.listViewPlaces); 
             
-            // filling of the list
+            // filling of the list adapter
       	  	listAdapter = new ArrayAdapter<String>(this, 
       	  			android.R.layout.simple_list_item_1, placesName);
             
@@ -221,65 +210,99 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 					
 					int itemPosition = pos;
 					
-					displayModifyPlaceButton(pos);
+					if(mod.equals(ADDMOD))
+					{
+						displayModifyPlaceButton();
+					}
+					else if (mod.equals(DISTANCEMOD))
+					{
+						if (place1.equals(""))
+						{
+							place1 = item;
+							tvNameFirstPoint.setText(item);
+							
+							loc1 = new Location("gps");
+							loc1.setLatitude(placesCoorLat.get(itemPosition)); 
+							loc1.setLongitude(placesCoorLong.get(itemPosition)); 
+						}
+						else if (place2.equals(""))
+						{
+							place2 = item;
+							tvNameSecondPoint.setText(item);
+							
+							loc2 = new Location("gps");
+							loc2.setLatitude(placesCoorLat.get(itemPosition)); 
+							loc2.setLongitude(placesCoorLong.get(itemPosition));
+							
+							float d = loc1.distanceTo(loc2);
+							
+							tvResultDistance.setText(Double.toString(Math.round(d/1000)) + " km");
+						}
+						else if (!tvResultDistance.equals(""))
+						{
+							loc1 = null;
+							loc2 = null;
+							place2 = "";
+									
+							tvResultDistance.setText("");
+							tvNameSecondPoint.setText("");
+							
+							place1 = item;
+							tvNameFirstPoint.setText(item);
+							
+							loc1 = new Location("gps");
+							loc1.setLatitude(placesCoorLat.get(itemPosition)); 
+							loc1.setLongitude(placesCoorLong.get(itemPosition));
+						}
+					}
 					
 					// creation of the chosen point
 					GeoPoint p = new GeoPoint((int) (placesCoorLat.get(itemPosition) * 1E6), 
-							(int) (placesCoorLong.get(itemPosition) * 1E6));
+							(int) (placesCoorLong.get(itemPosition) * 1E6)); 
 					
 					String subTitle = placesStreet.get(itemPosition);
-					if (placesContactHome.get(itemPosition)!=null)
+					if (!placesContactHome.get(itemPosition).equals(""))
 					{
 						subTitle = subTitle + "\nHome of " + placesContactHome.get(itemPosition);
 					}
 					
-					OverlayItem overlay = new OverlayItem(p, item, 
-							placesStreet.get(itemPosition) + "\nHome of " + placesContactHome.get(itemPosition));
+					OverlayItem overlay = new OverlayItem(p, item, subTitle);
 					
 					itemizedoverlay.addOverlay(overlay);
 		            mapOverlays.add(itemizedoverlay);
 		            
 		            mapController.setCenter(p);
-		            
-		            Log.d("pos",Integer.toString(itemPosition));
-		            
+   
 		            posPlaceModify = itemPosition;
 				}   	
             }); // end new OnItemClickListener()
       	  	  	
       	  	mapView.setOnLongpressListener(new MyCustomMapView.OnLongpressListener() 
-      	  	{
+      	  	{ 
       	  		public void onLongpress(final MapView view, final GeoPoint longpressLocation) {
       	  			runOnUiThread(new Runnable() {
-      	  				public void run() {	   	  
-      	  					bModifyPlace.setVisibility(View.GONE);
-      	  					// creation and opening of the contextual menu
-      	  					registerForContextMenu(view);
-      	  					openContextMenu(view);
+      	  				public void run() {	  
       	  					
-      	  					myPoint = longpressLocation;
+  	  						bModifyPlace.setVisibility(View.GONE);
+  	  						// creation and opening of the contextual menu
+  	  						registerForContextMenu(view);
+  	  						openContextMenu(view);
+  	  						
+  	  						myPoint = new GeoPoint(longpressLocation.getLatitudeE6(), 
+  	  								longpressLocation.getLongitudeE6());
+  	  					
+  	  						//myPoint = longpressLocation;
       	  				}
       	  			});
       	  		}
       	  	});
-      	  	/*
-      	  	mapView.setOnTouchListener(new OnTouchListener() {
 
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					
-					Toast.makeText(mContext, "coucou touch map", Toast.LENGTH_SHORT).show();
-					
-					return false;
-				}
-      	  		
-      	  	});*/
       	  	
         } // end if (mapView != null )
       	  	
 
-        
-        Button bAddPlace = (Button) findViewById(R.id.button_add_place);
+         
+        bAddPlace = (Button) findViewById(R.id.button_add_place);
         
         if ( bAddPlace != null )
         {
@@ -304,10 +327,7 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 
 				@Override
 				public void onClick(View v) {
-					
-					
-					
-					
+
 					Intent i = new Intent (MapProject2Activity.this, ModifyPlaceActivity.class);
 					//startActivity(i);
 					
@@ -322,16 +342,33 @@ public class MapProject2Activity extends MapActivity implements LocationListener
         
     } // end public void initUI()
     
-    public void displayModifyPlaceButton(int placeID)
+    public void fillLists()
     {
-    	//Log.d("MapProject2Activity", "lol");
-    	
-    	bModifyPlace.setVisibility(View.VISIBLE);
-    	
-    	String place = placesName.get(placeID);
-    	
-    	
+    	// if the lists are empty (happens when the orientation change)
+        if (placesName.isEmpty()) 
+        {
+        	// recovering of the places previously added by the user in other sessions
+        	for (int i=1; i < compteurPlaces; i++)
+        	{
+        		if ( !settings.getString("name"+Integer.toString(i),"").equals("") )
+        		{
+        			placesName.add(settings.getString("name"+Integer.toString(i),""));
+        			placesStreet.add(settings.getString("address"+Integer.toString(i),""));
+        			placesCoorLat.add(Double.parseDouble(settings.getString("lat"+Integer.toString(i),"")));
+        			placesCoorLong.add(Double.parseDouble(settings.getString("long"+Integer.toString(i),"")));
+        			placesNumber.add(i);
+        			placesContactHome.add(settings.getString("contact"+Integer.toString(i),""));
+        		}
+        	}
+        	
+        } // end if (placesName.isEmpty())
     }
+    
+    public void displayModifyPlaceButton()
+    {	
+    	bModifyPlace.setVisibility(View.VISIBLE);
+    }
+    
 
     // creation of the menu
     @Override
@@ -342,6 +379,10 @@ public class MapProject2Activity extends MapActivity implements LocationListener
     	SubMenu fileOptions = menu.addSubMenu(0,MENU_OPTIONS,1,R.string.options);
     	SubMenu fileMapMode = fileOptions.addSubMenu(0, SOUS_MENU_OPTIONS_MAP_MODE, 
     			1, R.string.mapmode);
+    	
+    	fileOptions.addSubMenu(0,SOUS_MENU_OPTIONS_ADD_MODIFY_POINT,2,"Display/Add/Modify point");
+    	fileOptions.addSubMenu(0,SOUS_MENU_OPTIONS_DISTANCE_POINT,3,"Distance between points");
+    	
     	
     	fileMapMode.addSubMenu(0, SOUS_MENU_MAP_MODE_SATELLITE, 1, R.string.satellite);
     	fileMapMode.addSubMenu(0, SOUS_MENU_MAP_MODE_TRAFFIC, 2, R.string.traffic);
@@ -368,11 +409,23 @@ public class MapProject2Activity extends MapActivity implements LocationListener
     			}
     			return true;
     			
-    		case SOUS_MENU_MAP_MODE_TRAFFIC:  
+    		case SOUS_MENU_MAP_MODE_TRAFFIC:   
     			if (!mapView.isTraffic()) {
     				mapView.setTraffic(true); 
     				mapView.setSatellite(false);	
     			}
+    			return true;
+    			
+    		case SOUS_MENU_OPTIONS_ADD_MODIFY_POINT:
+    			mod = ADDMOD;
+    			addModifyDeletePointsMod();
+    			tvInfo.setText(R.string.text_pres1);
+    			return true;
+    			
+    		case SOUS_MENU_OPTIONS_DISTANCE_POINT:
+    			mod = DISTANCEMOD;
+    			distancePointsMod();
+    			tvInfo.setText(R.string.text_pres2);
     			return true;
     			
     		default :
@@ -405,8 +458,10 @@ public class MapProject2Activity extends MapActivity implements LocationListener
     } // end public boolean onContextItemSelected(MenuItem item)
     
     // procedure which add a chosen point
-    public void addPoint()
+    public void addPoint() 
     {
+    	compteurPlaces = settings.getInt("counterPlaces", 0);
+    	
     	placesName.add("MyTestPoint"+compteurPlaces);
     	   
 		placesStreet.add("");
@@ -414,21 +469,21 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 		placesCoorLong.add((double) myPoint.getLongitudeE6() / 1E6);
 
 		placesCoorLat.add((double) myPoint.getLatitudeE6() / 1E6);
-		
+		 
 		placesNumber.add(compteurPlaces);  
 		
 		placesContactHome.add(null);
-
+ 
 		listAdapter.notifyDataSetChanged();
 		
 		editor.putString("name"+Integer.toString(compteurPlaces), "MyTestPoint"+compteurPlaces);
 		editor.putString("address"+Integer.toString(compteurPlaces), "");
 		
 		editor.putString("long"+Integer.toString(compteurPlaces), 
-				Integer.toString(myPoint.getLongitudeE6()));
+				Double.toString((double) myPoint.getLongitudeE6() / 1E6));
 		
 		editor.putString("lat"+Integer.toString(compteurPlaces), 
-				Integer.toString(myPoint.getLatitudeE6()));
+				Double.toString((double) myPoint.getLatitudeE6() / 1E6));
 		
 		editor.putString("contact"+Integer.toString(compteurPlaces), 
 				"");
@@ -440,6 +495,8 @@ public class MapProject2Activity extends MapActivity implements LocationListener
         mapOverlays.add(itemizedoverlay);
         
         mapController.setCenter(myPoint);
+        
+        
         
         compteurPlaces++;
 		
@@ -457,6 +514,7 @@ public class MapProject2Activity extends MapActivity implements LocationListener
 	@Override
 	public void onLocationChanged(Location location) {
 		
+		
 		lat = location.getLatitude();
 		lng = location.getLongitude();
 		
@@ -473,6 +531,47 @@ public class MapProject2Activity extends MapActivity implements LocationListener
         mapOverlays.add(itemizedoverlay);
 		
 		
+	}
+	
+	// procedure called if the application is on the "add point" mod
+	public void addModifyDeletePointsMod()
+	{
+		bAddPlace.setVisibility(View.VISIBLE);
+		bModifyPlace.setVisibility(View.GONE);
+		
+		tvNameFirstPoint.setText("");
+		tvNameSecondPoint.setText("");
+		tvResultDistance.setText("");
+		
+		loc1 = null;
+		loc2 = null;
+		
+		place1 = "";
+		place2 = "";
+		 
+		tvFirstPoint.setVisibility(View.GONE);
+        tvSecondPoint.setVisibility(View.GONE);
+        tvDistance.setVisibility(View.GONE);
+        tvNameFirstPoint.setVisibility(View.GONE);
+        tvNameSecondPoint.setVisibility(View.GONE);
+        tvResultDistance.setVisibility(View.GONE);
+	}
+	
+	// procedure called if the application is on the "distance" mod
+	public void distancePointsMod()
+	{
+		bAddPlace.setVisibility(View.GONE);
+		bModifyPlace.setVisibility(View.GONE);
+		
+		//mapView.setTop(100);
+		
+		tvFirstPoint.setVisibility(View.VISIBLE);
+        tvSecondPoint.setVisibility(View.VISIBLE);
+        tvDistance.setVisibility(View.VISIBLE); 
+        
+        tvNameFirstPoint.setVisibility(View.VISIBLE);
+        tvNameSecondPoint.setVisibility(View.VISIBLE);
+        tvResultDistance.setVisibility(View.VISIBLE);
 	}
 
 	@Override

@@ -38,6 +38,8 @@ public class AddPlaceActivity extends Activity
 	private SharedPreferences.Editor editor;
 	private int compteurPlaces;
 	
+	public static final String PREFS_PLACES = "MyPlacesFile15";
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,12 +48,10 @@ public class AddPlaceActivity extends Activity
         mContext = getApplicationContext(); 
         
         listViewChoices = (ListView)findViewById(R.id.listviewchoices); 
-        
         bAdd = (Button) findViewById(R.id.confirmplace);
-        
         tvError = (TextView) findViewById(R.id.labelerror);
         
-        settings = getSharedPreferences(MapProject2Activity.PREFS_PLACES, 0);
+        settings = getSharedPreferences(PREFS_PLACES, 0);
         editor = settings.edit();
         
         compteurPlaces = settings.getInt("counterPlaces", 0);
@@ -62,7 +62,6 @@ public class AddPlaceActivity extends Activity
 			public void onClick(View v) 
 			{
 				EditText etName = (EditText) findViewById(R.id.entryname);
-				
 				EditText etAddr = (EditText) findViewById(R.id.entryadress);
 				
 				placeName = etName.getText().toString();
@@ -114,6 +113,8 @@ public class AddPlaceActivity extends Activity
 							// if just one address was found
 							else
 							{
+								compteurPlaces = settings.getInt("counterPlaces", 0);
+								
 								MapProject2Activity.placesName.add(placeName);
 								
 								placeAddress = listAd.get(0).getAddressLine(0) + " " +
@@ -132,6 +133,7 @@ public class AddPlaceActivity extends Activity
 								// update of the list of places
 								MapProject2Activity.listAdapter.notifyDataSetChanged();
 								
+								// save on user preferences
 								editor.putString("name"+Integer.toString(compteurPlaces), placeName);
 								editor.putString("address"+Integer.toString(compteurPlaces), placeAddress);
 								
@@ -175,6 +177,8 @@ public class AddPlaceActivity extends Activity
 			public void onItemClick(AdapterView<?> list, View v,
 					int pos, long id) 
 			{
+				compteurPlaces = settings.getInt("counterPlaces", 0);
+				
 				MapProject2Activity.placesName.add(placeName);
 				
 				placeAddress = listAd.get(pos).getAddressLine(0) + " " +
@@ -190,9 +194,10 @@ public class AddPlaceActivity extends Activity
 				
 				MapProject2Activity.placesContactHome.add(null);
 				
+				// save on user preferences
 				editor.putString("name"+Integer.toString(compteurPlaces), placeName);
 				editor.putString("address"+Integer.toString(compteurPlaces), 
-						placeAddress);
+						placeAddress); 
 				
 				editor.putString("long"+Integer.toString(compteurPlaces), 
 						Double.toString(listAd.get(pos).getLongitude()));

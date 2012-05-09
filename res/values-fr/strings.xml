@@ -9,7 +9,10 @@
     <string name="text_layout_large">Coucou je suis en mode layout-large</string>
     <string name="text_layout_large_land">Coucou je suis en mode layout-large-land</string>
     
-    <string name="text_pres">Choississez un endroit pour le faire apparaître sur la carte</string>
+    <string name="text_pres1">Choississez un endroit pour le faire apparaître sur la carte. 
+        Vous pouvez aussi ajouter, supprimer ou modifier un point</string>
+        
+    <string name="text_pres2">Choississez 2 points de votre choix pour afficher la distance entre ces 2.</string>
     
     <string name="google_map_key">0DXRNLYK3YcF26UHcOYbSDjItt3rJqBOBNTI5WQ</string>
 
@@ -57,12 +60,17 @@
     
     <string name="supprpointquestion">Supprimer ce point ?</string>
     
-    <string name="sethomeaddress">Fixé en tant qu\'adresse principal à...</string>
+    <string name="sethomeaddress">Fixé en tant qu\'adresse principal à &#8230;</string>
     
     <string name="entrycontacthome">Adresse principale de : </string>
     
     <string name="contacthome">personne</string>
     
+    <string name="text_point1">Premier point : </string>
+    
+    <string name="text_point2">Deuxième point : </string>
+    
+    <string name="text_distance">Distance : </string>
     
 
 

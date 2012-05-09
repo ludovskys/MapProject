@@ -1,49 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="horizontal" >
 
     <TextView
-        android:layout_width="fill_parent"
+        android:id="@+id/textviewinfos"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="@string/text_pres" />
-        
-    <RelativeLayout
-    	android:orientation="horizontal"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content" >
-        
-    	<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    		android:id="@+id/listViewPlaces"
-    		android:layout_width="150dp"
-    		android:layout_height="150dp"
-    		android:layout_marginTop="20dp"
-    		android:layout_alignParentLeft="true" ></ListView>
-    		
-    	<Button 
-    		android:id="@+id/button_add_place"
-    		android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:layout_below="@id/listViewPlaces"
-    		android:text="@string/addplace" />
+        android:text="@string/text_pres1" />
 
-    	<pckg.MapProject2.MyCustomMapView
-    		xmlns:android="http://schemas.android.com/apk/res/android"
-    		android:id="@+id/mapview"
-    		android:layout_width="200dp"
-    		android:layout_height="200dp"
-    		android:layout_marginLeft="250dp"
-    		android:layout_gravity="center"
-    		android:clickable="true"
-    		android:apiKey="@string/google_map_key" />
-    	
-    	<LinearLayout android:id="@+id/zoom"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:layout_centerHorizontal="true"/>
-		
-	</RelativeLayout>
+    <TextView
+        android:id="@+id/textviewpoint1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textviewinfos"
+        android:layout_marginTop="10dp"
+        android:text="@string/text_point1" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/textviewnamepoint1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textviewinfos"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/textviewpoint1" />
+
+    <TextView
+        android:id="@+id/textviewpoint2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textviewpoint1"
+        android:text="@string/text_point2" />
+
+    <TextView
+        android:id="@+id/textviewnamepoint2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textviewpoint1"
+        android:layout_toRightOf="@id/textviewpoint2" />
+
+    <TextView
+        android:id="@+id/textviewdistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textviewpoint2"
+        android:text="@string/text_distance" />
+
+    <TextView
+        android:id="@+id/textviewresultdistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textviewpoint2"
+        android:layout_toRightOf="@id/textviewdistance" />
+
+    <ListView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/listViewPlaces"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/textviewpoint2"
+        android:layout_marginTop="20dp" >
+    </ListView>
+
+    <pckg.MapProject2.MyCustomMapView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mapview"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="300dp"
+        android:apiKey="@string/google_map_key"
+        android:clickable="true" />
+
+    <LinearLayout
+        android:id="@+id/zoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/button_add_place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/mapview"
+        android:layout_below="@+id/mapview"
+        android:text="@string/addplace"
+        android:textSize="10dp" />
+    
+    <Button
+        android:id="@+id/button_modify_place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mapview"
+        android:layout_toRightOf="@+id/button_add_place"
+        android:text="@string/modifyplace"
+        android:textSize="10dp" />
+
+</RelativeLayout>

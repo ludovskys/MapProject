@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/labeltitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:layout_marginBottom="30dp"
+        android:text="@string/modifyplace"/>
+    
+    <TextView
+        android:id="@+id/labelmodifyplace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labeltitle"
+        android:text="@string/entername" />
+
+    <EditText
+        android:id="@+id/entrymodifyplace"
+        android:inputType="text"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/labelmodifyplace"
+        android:layout_marginBottom="30dp"
+        android:background="@android:drawable/editbox_background"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/labelcontacthome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/button_set_home_addr"
+        android:text="@string/entrycontacthome" />
+
+    <TextView
+        android:id="@+id/labelmodifycontacthome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/labelcontacthome"
+        android:layout_above="@id/button_set_home_addr"
+        android:text="@string/contacthome" />
+
+    <Button
+        android:id="@+id/button_set_home_addr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/entrymodifyplace"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="@string/sethomeaddress" />
+
+    <Button
+        android:id="@+id/button_confirm_modif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_set_home_addr"
+        android:gravity="center"
+        android:text="@string/modify" />
+
+    <Button
+        android:id="@+id/button_suppr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_set_home_addr"
+        android:layout_toRightOf="@+id/button_confirm_modif"
+        android:gravity="center"
+        android:text="@string/suppr_place" />
+
+    <TextView
+        android:id="@+id/labelmodifyaddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/entrymodifyplace"
+        android:layout_toRightOf="@+id/button_set_home_addr"
+        android:text="@string/enteraddr" />
+
+    <EditText
+        android:id="@+id/entrymodifyaddress"
+        android:inputType="text"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/entrymodifyplace"
+        android:layout_alignBottom="@+id/entrymodifyplace"
+        android:layout_toRightOf="@+id/button_set_home_addr"
+        android:background="@android:drawable/editbox_background"
+        android:ems="10"
+        android:textColor="#000000" >
+
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>

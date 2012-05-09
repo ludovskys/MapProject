@@ -1,13 +1,9 @@
 package pckg.MapProject2;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,47 +11,39 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class ModifyPlaceActivity extends Activity {
 	
-	static int positionPlace;
+	public static int positionPlace;
 	
-	String placeToModify, addrToModify, contactToModify;
+	private String placeToModify, addrToModify;
 	
-	int placeNumber;
+	private int placeNumber;
 	
-	EditText tvNamePlace, tvAddrPlace;
-	TextView tvContactHome;
+	private EditText tvNamePlace, tvAddrPlace;
+	private TextView tvContactHome;
 	
-	Cursor cursorContacts;
+	private SharedPreferences settings;
+	private SharedPreferences.Editor editor;
 	
-	SimpleCursorAdapter adapterContacts;
+	private static final int CONTEXTUAL_MENU_DELETE_POINT = 1;
 	
-	public SharedPreferences settings;
-	public SharedPreferences.Editor editor;
-	
-	static final int CONTEXTUAL_MENU_DELETE_POINT = 1;
-	
-	boolean contextMenuDelete = false;
+	private static final String PREFS_PLACES = "MyPlacesFile15"; 
 	
 	@Override 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.modifyplace);
         
-        settings = getSharedPreferences(MapProject2Activity.PREFS_PLACES, 0);
+        settings = getSharedPreferences(PREFS_PLACES, 0);
         editor = settings.edit();
         
-        positionPlace = MapProject2Activity.posPlaceModify;
-        
+        // get the place to modify
+        positionPlace = MapProject2Activity.posPlaceModify; 
         placeToModify = MapProject2Activity.placesName.get(positionPlace);
         addrToModify = MapProject2Activity.placesStreet.get(positionPlace); 
-        contactToModify = MapProject2Activity.placesContactHome.get(positionPlace);
-        
         placeNumber = MapProject2Activity.placesNumber.get(positionPlace);
         
         tvNamePlace = (EditText) findViewById(R.id.entrymodifyplace);
@@ -68,6 +56,7 @@ public class ModifyPlaceActivity extends Activity {
          
         tvNamePlace.setText(placeToModify);
         
+        // if the address is not set
         if (addrToModify == null )
         {
         	tvAddrPlace.setText(""); 
@@ -84,20 +73,19 @@ public class ModifyPlaceActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				
+				// remove the place from the preferences
 				editor.remove("name"+Integer.toString(placeNumber));
-				
 				editor.remove("address"+Integer.toString(placeNumber));
-
 				editor.remove("long"+Integer.toString(placeNumber));
-
 				editor.remove("lat"+Integer.toString(placeNumber));
-				
 				editor.remove("lat"+Integer.toString(placeNumber));
-				
 				editor.remove("contact"+Integer.toString(placeNumber));
  
 				editor.commit();
 				
+				/* save the place modify
+				 * (we cannot modify directly on the preferences, so we have to delete and readd)
+				 */
 				editor.putString("name"+Integer.toString(placeNumber), tvNamePlace.getText().toString());
 				editor.putString("address"+Integer.toString(placeNumber), tvAddrPlace.getText().toString());
 				
@@ -110,8 +98,6 @@ public class ModifyPlaceActivity extends Activity {
 				editor.putString("contact"+Integer.toString(placeNumber), 
 						tvContactHome.getText().toString());
 				
-				Log.d("tag modifyplaceact", tvContactHome.getText().toString());
-				
 				editor.commit();
 				
 				MapProject2Activity.placesName.set(positionPlace, tvNamePlace.getText().toString());
@@ -123,6 +109,7 @@ public class ModifyPlaceActivity extends Activity {
 				// update of the list of places
 				MapProject2Activity.listAdapter.notifyDataSetChanged();
 				
+				// return to the main view
 				finish();
 				
 			}
@@ -134,8 +121,6 @@ public class ModifyPlaceActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				
-				contextMenuDelete = true; 
 				
 				// creation and opening of the contextual menu
 				registerForContextMenu(v);
@@ -151,8 +136,8 @@ public class ModifyPlaceActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				
+				// opening of the contact list activity to choose a contact
 				Intent i = new Intent (ModifyPlaceActivity.this, ListContactsActivity.class);
-				
 				startActivity(i);
 				
 			}
@@ -166,18 +151,11 @@ public class ModifyPlaceActivity extends Activity {
     public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) 
     {  
 		super.onCreateContextMenu(menu, v, menuInfo);  
-				
-		if (contextMenuDelete)
-		{
-			menu.setHeaderTitle(R.string.supprpointquestion);  
-			menu.add(0, CONTEXTUAL_MENU_DELETE_POINT, 0, R.string.yes);  
-			menu.add(0, v.getId(), 0, R.string.cancel); 
-		}
-		else
-		{
-			menu.setHeaderTitle("lol");  
-			//
-		}
+
+		menu.setHeaderTitle(R.string.supprpointquestion);  
+		menu.add(0, CONTEXTUAL_MENU_DELETE_POINT, 0, R.string.yes);  
+		menu.add(0, v.getId(), 0, R.string.cancel); 
+
 		
     }  // end public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo)
     
@@ -187,13 +165,14 @@ public class ModifyPlaceActivity extends Activity {
     {  
         if(item.getItemId() == CONTEXTUAL_MENU_DELETE_POINT)
         {
-        	Toast.makeText(getApplicationContext(), "Suppression confirmed", Toast.LENGTH_LONG).show();
+        	Toast.makeText(getApplicationContext(), "Point deleted", Toast.LENGTH_LONG).show();
         	suppresionPoint();
         }  
         else {return false;}  
         return true;  
     } // end public boolean onContextItemSelected(MenuItem item)
     
+    // procedure who suppress a point
     public void suppresionPoint()
     {
     	editor.remove("name"+Integer.toString(placeNumber));
@@ -215,7 +194,7 @@ public class ModifyPlaceActivity extends Activity {
 		// update of the list of places
 		MapProject2Activity.listAdapter.notifyDataSetChanged();
 		
-		// we return to the previous view
+		// we return to the main view
 		finish();
     }
     
